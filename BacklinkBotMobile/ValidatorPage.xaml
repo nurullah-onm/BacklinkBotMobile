@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="BacklinkBotMobile.ValidatorPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#0F0F23">
+
+    <Grid>
+        <!-- GRADIENT BACKGROUND -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#0F0F23" Offset="0.0" />
+                <GradientStop Color="#1E1E3F" Offset="0.5" />
+                <GradientStop Color="#0F0F23" Offset="1.0" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <ScrollView>
+            <VerticalStackLayout Spacing="20" Padding="20">
+
+                <!-- HEADER -->
+                <Grid ColumnDefinitions="Auto,*,Auto" Margin="0,10,0,20">
+                    <!-- GERİ BUTONU -->
+                    <Button Grid.Column="0"
+                            x:Name="BackButton"
+                            Text="◀"
+                            FontSize="24"
+                            BackgroundColor="#1A1A2E"
+                            TextColor="#A855F7"
+                            WidthRequest="50"
+                            HeightRequest="50"
+                            CornerRadius="25"
+                            Clicked="OnBackClicked" />
+
+                    <!-- BAŞLIK -->
+                    <Label Grid.Column="1"
+                           Text="🔍 Link Doğrulayıcı"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="#A855F7"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+
+                    <!-- RAPOR BUTONU -->
+                    <Button Grid.Column="2"
+                            x:Name="ReportButton"
+                            Text="📊"
+                            FontSize="20"
+                            BackgroundColor="#22C55E"
+                            TextColor="White"
+                            WidthRequest="50"
+                            HeightRequest="50"
+                            CornerRadius="25"
+                            Clicked="OnReportClicked" />
+                </Grid>
+
+                <!-- URL GİRİŞ KARTI -->
+                <Frame BackgroundColor="#1A1A2E" 
+                       CornerRadius="15" 
+                       HasShadow="True"
+                       Padding="20">
+                    <VerticalStackLayout Spacing="15">
+
+                        <Label Text="🌐 URL Test ve Analiz"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="#A855F7" />
+
+                        <!-- TEK URL GİRİŞ -->
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Tek URL Test Et" TextColor="#B8B8D6" FontSize="14" />
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Entry Grid.Column="0"
+                                       x:Name="SingleUrlEntry"
+                                       Text="https://"
+                                       Keyboard="Url"
+                                       BackgroundColor="#2A2A4E"
+                                       TextColor="White"
+                                       PlaceholderColor="#6B7280"
+                                       Placeholder="Test edilecek URL'yi girin"
+                                       Completed="OnSingleUrlEntryCompleted" />
+
+                                <Button Grid.Column="1"
+                                        x:Name="TestSingleButton"
+                                        Text="🚀"
+                                        FontSize="16"
+                                        BackgroundColor="#A855F7"
+                                        TextColor="White"
+                                        WidthRequest="50"
+                                        CornerRadius="10"
+                                        Clicked="OnTestSingleClicked" />
+                            </Grid>
+                        </VerticalStackLayout>
+
+                        <!-- TOPLU URL GİRİŞ -->
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Toplu URL Listesi" TextColor="#B8B8D6" FontSize="14" />
+                            <Editor x:Name="BulkUrlEditor"
+                                    BackgroundColor="#2A2A4E"
+                                    TextColor="White"
+                                    PlaceholderColor="#6B7280"
+                                    Placeholder="Her satıra bir URL yazın&#x0a;https://example1.com&#x0a;https://example2.com&#x0a;https://example3.com"
+                                    HeightRequest="100" />
+                        </VerticalStackLayout>
+
+                        <!-- AKSIYON BUTONLARI -->
+                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                            <Button Grid.Column="0"
+                                    x:Name="TestBulkButton"
+                                    Text="📋 Toplu Test"
+                                    FontSize="12"
+                                    BackgroundColor="#3B82F6"
+                                    TextColor="White"
+                                    CornerRadius="10"
+                                    Clicked="OnTestBulkClicked" />
+
+                            <Button Grid.Column="1"
+                                    x:Name="LoadFileButton"
+                                    Text="📁 Dosyadan Yükle"
+                                    FontSize="12"
+                                    BackgroundColor="#F59E0B"
+                                    TextColor="White"
+                                    CornerRadius="10"
+                                    Clicked="OnLoadFileClicked" />
+
+                            <Button Grid.Column="2"
+                                    x:Name="ClearAllButton"
+                                    Text="🗑️ Temizle"
+                                    FontSize="12"
+                                    BackgroundColor="#EF4444"
+                                    TextColor="White"
+                                    CornerRadius="10"
+                                    Clicked="OnClearAllClicked" />
+                        </Grid>
+
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- TEST AYARLARI KARTI -->
+                <Frame BackgroundColor="#1A1A2E" 
+                       CornerRadius="15" 
+                       HasShadow="True"
+                       Padding="20">
+                    <VerticalStackLayout Spacing="15">
+
+                        <Label Text="⚙️ Test Ayarları"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="#3B82F6" />
+
+                        <!-- TIMEOUT AYARI -->
+                        <VerticalStackLayout Spacing="10">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                                       Text="⏱️ Test Timeout"
+                                       TextColor="#B8B8D6"
+                                       FontSize="14"
+                                       VerticalOptions="Center" />
+
+                                <Label Grid.Column="1"
+                                       x:Name="TestTimeoutLabel"
+                                       Text="10 saniye"
+                                       TextColor="#F59E0B"
+                                       FontSize="12"
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center" />
+                            </Grid>
+
+                            <Slider x:Name="TestTimeoutSlider"
+                                    Minimum="5"
+                                    Maximum="60"
+                                    Value="10"
+                                    ThumbColor="#F59E0B"
+                                    MinimumTrackColor="#F59E0B"
+                                    MaximumTrackColor="#4A4A6A"
+                                    ValueChanged="OnTestTimeoutChanged" />
+                        </VerticalStackLayout>
+
+                        <!-- TEST TİPLERİ -->
+                        <VerticalStackLayout Spacing="12">
+                            <Label Text="🧪 Test Tipleri" TextColor="#B8B8D6" FontSize="14" />
+
+                            <!-- HTTP STATUS CHECK -->
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                                       Text="📡 HTTP Status Kontrolü"
+                                       TextColor="#B8B8D6"
+                                       FontSize="13"
+                                       VerticalOptions="Center" />
+
+                                <Switch Grid.Column="1"
+                                        x:Name="HttpStatusSwitch"
+                                        IsToggled="True"
+                                        ThumbColor="#22C55E"
+                                        OnColor="#22C55E" />
+                            </Grid>
+
+                            <!-- FORM DETECTION -->
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                                       Text="📝 Yorum Alanı Tespiti"
+                                       TextColor="#B8B8D6"
+                                       FontSize="13"
+                                       VerticalOptions="Center" />
+
+                                <Switch Grid.Column="1"
+                                        x:Name="FormDetectionSwitch"
+                                        IsToggled="True"
+                                        ThumbColor="#A855F7"
+                                        OnColor="#A855F7" />
+                            </Grid>
+
+                            <!-- RESPONSE TIME -->
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                                       Text="⚡ Yanıt Süresi Ölçümü"
+                                       TextColor="#B8B8D6"
+                                       FontSize="13"
+                                       VerticalOptions="Center" />
+
+                                <Switch Grid.Column="1"
+                                        x:Name="ResponseTimeSwitch"
+                                        IsToggled="True"
+                                        ThumbColor="#3B82F6"
+                                        OnColor="#3B82F6" />
+                            </Grid>
+
+                            <!-- CONTENT ANALYSIS -->
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                                       Text="🔍 İçerik Analizi"
+                                       TextColor="#B8B8D6"
+                                       FontSize="13"
+                                       VerticalOptions="Center" />
+
+                                <Switch Grid.Column="1"
+                                        x:Name="ContentAnalysisSwitch"
+                                        IsToggled="False"
+                                        ThumbColor="#EF4444"
+                                        OnColor="#EF4444" />
+                            </Grid>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- CANLİ İSTATİSTİKLER KARTI -->
+                <Frame BackgroundColor="#1A1A2E" 
+                       CornerRadius="15" 
+                       HasShadow="True"
+                       Padding="20">
+                    <VerticalStackLayout Spacing="15">
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="📊 Canlı İstatistikler"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="#22C55E"
+                                   VerticalOptions="Center" />
+
+                            <Button Grid.Column="1"
+                                    x:Name="StopTestButton"
+                                    Text="⏹️"
+                                    FontSize="16"
+                                    BackgroundColor="#EF4444"
+                                    TextColor="White"
+                                    WidthRequest="40"
+                                    HeightRequest="40"
+                                    CornerRadius="20"
+                                    IsEnabled="False"
+                                    Clicked="OnStopTestClicked" />
+                        </Grid>
+
+                        <!-- İSTATİSTİK GRİDİ -->
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="15" RowSpacing="10">
+
+                            <!-- TOPLAM TEST -->
+                            <Frame Grid.Row="0" Grid.Column="0" BackgroundColor="#2A2A4E" CornerRadius="10" Padding="12">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="📈" FontSize="18" HorizontalOptions="Center" />
+                                    <Label x:Name="TotalTestedLabel" Text="0" FontSize="16" FontAttributes="Bold" TextColor="#3B82F6" HorizontalOptions="Center" />
+                                    <Label Text="Test Edilen" FontSize="9" TextColor="#B8B8D6" HorizontalOptions="Center" />
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- AKTİF LİNKLER -->
+                            <Frame Grid.Row="0" Grid.Column="1" BackgroundColor="#2A2A4E" CornerRadius="10" Padding="12">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="✅" FontSize="18" HorizontalOptions="Center" />
+                                    <Label x:Name="ActiveLinksLabel" Text="0" FontSize="16" FontAttributes="Bold" TextColor="#22C55E" HorizontalOptions="Center" />
+                                    <Label Text="Aktif" FontSize="9" TextColor="#B8B8D6" HorizontalOptions="Center" />
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- YORUM ALANI VAR -->
+                            <Frame Grid.Row="1" Grid.Column="0" BackgroundColor="#2A2A4E" CornerRadius="10" Padding="12">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="💬" FontSize="18" HorizontalOptions="Center" />
+                                    <Label x:Name="CommentAreaLabel" Text="0" FontSize="16" FontAttributes="Bold" TextColor="#A855F7" HorizontalOptions="Center" />
+                                    <Label Text="Yorum Alanı" FontSize="9" TextColor="#B8B8D6" HorizontalOptions="Center" />
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- ÖLÜL LİNKLER -->
+                            <Frame Grid.Row="1" Grid.Column="1" BackgroundColor="#2A2A4E" CornerRadius="10" Padding="12">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="❌" FontSize="18" HorizontalOptions="Center" />
+                                    <Label x:Name="DeadLinksLabel" Text="0" FontSize="16" FontAttributes="Bold" TextColor="#EF4444" HorizontalOptions="Center" />
+                                    <Label Text="Ölü" FontSize="9" TextColor="#B8B8D6" HorizontalOptions="Center" />
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- ORTALAMA HIZ -->
+                            <Frame Grid.Row="2" Grid.Column="0" BackgroundColor="#2A2A4E" CornerRadius="10" Padding="12">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="⚡" FontSize="18" HorizontalOptions="Center" />
+                                    <Label x:Name="AvgSpeedLabel" Text="0ms" FontSize="16" FontAttributes="Bold" TextColor="#F59E0B" HorizontalOptions="Center" />
+                                    <Label Text="Ort. Hız" FontSize="9" TextColor="#B8B8D6" HorizontalOptions="Center" />
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- BAŞARI ORANI -->
+                            <Frame Grid.Row="2" Grid.Column="1" BackgroundColor="#2A2A4E" CornerRadius="10" Padding="12">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="🎯" FontSize="18" HorizontalOptions="Center" />
+                                    <Label x:Name="SuccessRateLabel" Text="0%" FontSize="16" FontAttributes="Bold" TextColor="#06B6D4" HorizontalOptions="Center" />
+                                    <Label Text="Başarı" FontSize="9" TextColor="#B8B8D6" HorizontalOptions="Center" />
+                                </VerticalStackLayout>
+                            </Frame>
+
+                        </Grid>
+
+                        <!-- PROGRESS BAR -->
+                        <ProgressBar x:Name="TestProgressBar"
+                                     Progress="0"
+                                     ProgressColor="#A855F7"
+                                     BackgroundColor="#4A4A6A"
+                                     HeightRequest="8" />
+
+                        <!-- DURUM LABEL -->
+                        <Label x:Name="StatusLabel"
+                               Text="💤 Bekleniyor..."
+                               FontSize="12"
+                               TextColor="#B8B8D6"
+                               HorizontalOptions="Center" />
+
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- SONUÇLAR LİSTESİ KARTI -->
+                <Frame BackgroundColor="#1A1A2E" 
+                       CornerRadius="15" 
+                       HasShadow="True"
+                       Padding="20">
+                    <VerticalStackLayout Spacing="15">
+
+                        <Grid ColumnDefinitions="*,Auto,Auto">
+                            <Label Grid.Column="0"
+                                   Text="📋 Test Sonuçları"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="#F59E0B"
+                                   VerticalOptions="Center" />
+
+                            <!-- FİLTRE BUTONU -->
+                            <Button Grid.Column="1"
+                                    x:Name="FilterButton"
+                                    Text="🔍"
+                                    FontSize="14"
+                                    BackgroundColor="#3B82F6"
+                                    TextColor="White"
+                                    WidthRequest="35"
+                                    HeightRequest="35"
+                                    CornerRadius="17"
+                                    Clicked="OnFilterClicked" />
+
+                            <!-- SİRALA BUTONU -->
+                            <Button Grid.Column="2"
+                                    x:Name="SortButton"
+                                    Text="📊"
+                                    FontSize="14"
+                                    BackgroundColor="#A855F7"
+                                    TextColor="White"
+                                    WidthRequest="35"
+                                    HeightRequest="35"
+                                    CornerRadius="17"
+                                    Margin="5,0,0,0"
+                                    Clicked="OnSortClicked" />
+                        </Grid>
+
+                        <!-- SONUÇLAR COLLECTION VIEW -->
+                        <CollectionView x:Name="ResultsCollectionView"
+                                        BackgroundColor="#2A2A4E"
+                                        HeightRequest="250">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="Auto,*,Auto,Auto" RowDefinitions="Auto,Auto" Padding="12,8" ColumnSpacing="10">
+
+                                        <!-- STATUS ICON -->
+                                        <Label Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                               Text="{Binding StatusIcon}"
+                                               FontSize="20"
+                                               VerticalOptions="Center" />
+
+                                        <!-- URL -->
+                                        <Label Grid.Row="0" Grid.Column="1"
+                                               Text="{Binding Url}"
+                                               TextColor="White"
+                                               FontSize="12"
+                                               LineBreakMode="TailTruncation"
+                                               VerticalOptions="Center" />
+
+                                        <!-- STATUS CODE -->
+                                        <Label Grid.Row="0" Grid.Column="2"
+                                               Text="{Binding StatusCode}"
+                                               TextColor="{Binding StatusColor}"
+                                               FontSize="10"
+                                               FontAttributes="Bold"
+                                               VerticalOptions="Center" />
+
+                                        <!-- RESPONSE TIME -->
+                                        <Label Grid.Row="0" Grid.Column="3"
+                                               Text="{Binding ResponseTime}"
+                                               TextColor="#F59E0B"
+                                               FontSize="10"
+                                               VerticalOptions="Center" />
+
+                                        <!-- DETAILS -->
+                                        <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"
+                                               Text="{Binding Details}"
+                                               TextColor="#B8B8D6"
+                                               FontSize="9"
+                                               LineBreakMode="TailTruncation" />
+
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                        <!-- SONUÇ AKSIYON BUTONLARI -->
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Button Grid.Column="0"
+                                    x:Name="SaveResultsButton"
+                                    Text="💾 Sonuçları Kaydet"
+                                    FontSize="14"
+                                    BackgroundColor="#22C55E"
+                                    TextColor="White"
+                                    CornerRadius="10"
+                                    Clicked="OnSaveResultsClicked" />
+
+                            <Button Grid.Column="1"
+                                    x:Name="ClearResultsButton"
+                                    Text="🗑️ Sonuçları Temizle"
+                                    FontSize="14"
+                                    BackgroundColor="#EF4444"
+                                    TextColor="White"
+                                    CornerRadius="10"
+                                    Clicked="OnClearResultsClicked" />
+                        </Grid>
+
+                    </VerticalStackLayout>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

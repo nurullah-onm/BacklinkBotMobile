@@ -1,0 +1,422 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="BacklinkBotMobile.MainPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#0F0F23">
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#0F0F23" Offset="0.0" />
+                <GradientStop Color="#1E1E3F" Offset="0.5" />
+                <GradientStop Color="#0F0F23" Offset="1.0" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <ScrollView>
+            <VerticalStackLayout Spacing="30" Padding="20" VerticalOptions="Center">
+
+                <!-- LOGO KARTI -->
+                <Frame BackgroundColor="#1A1A2E" 
+                       CornerRadius="20" 
+                       HasShadow="True"
+                       Padding="30,40">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="🚀"
+                               FontSize="60"
+                               HorizontalOptions="Center" />
+
+                        <Label Text="BacklinkBot"
+                               FontSize="36"
+                               FontAttributes="Bold"
+                               TextColor="#00D4AA"
+                               HorizontalOptions="Center" />
+
+                        <Label Text="MOBILE PRO"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#FF6B6B"
+                               HorizontalOptions="Center" />
+
+                        <Label Text="Süper Hızlı Backlink Otomasyonu"
+                               FontSize="14"
+                               TextColor="#B8B8D6"
+                               FontAttributes="Italic"
+                               HorizontalOptions="Center" />
+
+                        <!-- STATUS INDICATOR -->
+                        <Frame BackgroundColor="#2A2A4E" 
+                               CornerRadius="10" 
+                               Padding="8,4"
+                               HorizontalOptions="Center"
+                               Margin="0,10,0,0">
+                            <Grid ColumnDefinitions="Auto,*">
+                                <Ellipse Grid.Column="0"
+                                         x:Name="StatusIndicator"
+                                         Width="8"
+                                         Height="8"
+                                         Fill="#22C55E"
+                                         VerticalOptions="Center" />
+                                <Label Grid.Column="1"
+                                       x:Name="StatusLabel"
+                                       Text="Sistem Hazır"
+                                       FontSize="11"
+                                       TextColor="#B8B8D6"
+                                       VerticalOptions="Center"
+                                       Margin="8,0,0,0" />
+                            </Grid>
+                        </Frame>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- QUICK STATS BANNER -->
+                <Frame BackgroundColor="#2A2A4E" 
+                       CornerRadius="12" 
+                       HasShadow="True"
+                       Padding="15,10">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <Label Grid.Column="0"
+                               Text="📈"
+                               FontSize="16"
+                               VerticalOptions="Center" />
+                        <Label Grid.Column="1"
+                               x:Name="QuickStatsLabel"
+                               Text="Son 24 saatte 156 başarılı işlem"
+                               FontSize="12"
+                               TextColor="#B8B8D6"
+                               VerticalOptions="Center"
+                               Margin="10,0,0,0" />
+                        <Label Grid.Column="2"
+                               x:Name="OnlineUsersLabel"
+                               Text="🟢 Online"
+                               FontSize="11"
+                               TextColor="#22C55E"
+                               VerticalOptions="Center" />
+                    </Grid>
+                </Frame>
+
+                <!-- BACKLINK BOT BUTONU -->
+                <Frame BackgroundColor="Transparent" 
+                       BorderColor="#00D4AA" 
+                       CornerRadius="15"
+                       HasShadow="True">
+                    <Button x:Name="BacklinkButton"
+                            Text="🎯 BACKLINK BOT BAŞLAT"
+                            FontSize="18"
+                            FontAttributes="Bold"
+                            BackgroundColor="#00D4AA"
+                            TextColor="White"
+                            CornerRadius="15"
+                            HeightRequest="60"
+                            Clicked="OnBacklinkClicked" />
+                </Frame>
+
+                <!-- VALIDATOR BUTONU -->
+                <Frame BackgroundColor="Transparent" 
+                       BorderColor="#A855F7" 
+                       CornerRadius="15"
+                       HasShadow="True">
+                    <Button x:Name="ValidatorButton"
+                            Text="🔍 LİNK DOĞRULAYICI"
+                            FontSize="18"
+                            FontAttributes="Bold"
+                            BackgroundColor="#A855F7"
+                            TextColor="White"
+                            CornerRadius="15"
+                            HeightRequest="60"
+                            Clicked="OnValidatorClicked" />
+                </Frame>
+
+                <!-- AYARLAR BUTONU -->
+                <Frame BackgroundColor="Transparent" 
+                       BorderColor="#3B82F6" 
+                       CornerRadius="15"
+                       HasShadow="True">
+                    <Button x:Name="SettingsButton"
+                            Text="⚙️ AYARLAR VE KONFİGÜRASYON"
+                            FontSize="18"
+                            FontAttributes="Bold"
+                            BackgroundColor="#3B82F6"
+                            TextColor="White"
+                            CornerRadius="15"
+                            HeightRequest="60"
+                            Clicked="OnSettingsClicked" />
+                </Frame>
+
+                <!-- GELIŞMIŞ İSTATİSTİK KARTI -->
+                <Frame BackgroundColor="#1A1A2E" 
+                       CornerRadius="15" 
+                       HasShadow="True"
+                       Padding="20">
+                    <VerticalStackLayout Spacing="15">
+                        <!-- BAŞLIK -->
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="📊"
+                                   FontSize="18"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="1"
+                                   Text="Kişisel İstatistikler"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#00D4AA"
+                                   VerticalOptions="Center"
+                                   Margin="10,0,0,0" />
+                            <Button Grid.Column="2"
+                                    x:Name="RefreshStatsButton"
+                                    Text="🔄"
+                                    FontSize="12"
+                                    BackgroundColor="#2A2A4E"
+                                    TextColor="#B8B8D6"
+                                    CornerRadius="12"
+                                    WidthRequest="30"
+                                    HeightRequest="30"
+                                    Padding="0"
+                                    Clicked="OnRefreshStatsClicked" />
+                        </Grid>
+
+                        <!-- İSTATİSTİK GRİD -->
+                        <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="15">
+
+                            <!-- TOPLAM İŞLEM -->
+                            <Frame Grid.Row="0" Grid.Column="0" 
+                                   BackgroundColor="#2A2A4E" 
+                                   CornerRadius="10" 
+                                   Padding="12">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="📈" FontSize="20" HorizontalOptions="Center" />
+                                    <Label x:Name="TotalOperationsLabel" 
+                                           Text="0" 
+                                           FontSize="16" 
+                                           FontAttributes="Bold" 
+                                           TextColor="#00D4AA" 
+                                           HorizontalOptions="Center" />
+                                    <Label Text="İşlem" FontSize="10" TextColor="#B8B8D6" HorizontalOptions="Center" />
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- BAŞARILI -->
+                            <Frame Grid.Row="0" Grid.Column="1" 
+                                   BackgroundColor="#2A2A4E" 
+                                   CornerRadius="10" 
+                                   Padding="12">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="✅" FontSize="20" HorizontalOptions="Center" />
+                                    <Label x:Name="SuccessfulOperationsLabel" 
+                                           Text="0" 
+                                           FontSize="16" 
+                                           FontAttributes="Bold" 
+                                           TextColor="#22C55E" 
+                                           HorizontalOptions="Center" />
+                                    <Label Text="Başarılı" FontSize="10" TextColor="#B8B8D6" HorizontalOptions="Center" />
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- BAŞARI ORANI -->
+                            <Frame Grid.Row="0" Grid.Column="2" 
+                                   BackgroundColor="#2A2A4E" 
+                                   CornerRadius="10" 
+                                   Padding="12">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="🎯" FontSize="20" HorizontalOptions="Center" />
+                                    <Label x:Name="SuccessRateLabel" 
+                                           Text="0%" 
+                                           FontSize="16" 
+                                           FontAttributes="Bold" 
+                                           TextColor="#FF6B6B" 
+                                           HorizontalOptions="Center" />
+                                    <Label Text="Başarı" FontSize="10" TextColor="#B8B8D6" HorizontalOptions="Center" />
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- TOPLAM OTURUM -->
+                            <Frame Grid.Row="1" Grid.Column="0" 
+                                   BackgroundColor="#2A2A4E" 
+                                   CornerRadius="10" 
+                                   Padding="12">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="🔄" FontSize="20" HorizontalOptions="Center" />
+                                    <Label x:Name="TotalSessionsLabel" 
+                                           Text="0" 
+                                           FontSize="16" 
+                                           FontAttributes="Bold" 
+                                           TextColor="#A855F7" 
+                                           HorizontalOptions="Center" />
+                                    <Label Text="Oturum" FontSize="10" TextColor="#B8B8D6" HorizontalOptions="Center" />
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- GÜNLÜK ORTALAMA -->
+                            <Frame Grid.Row="1" Grid.Column="1" 
+                                   BackgroundColor="#2A2A4E" 
+                                   CornerRadius="10" 
+                                   Padding="12">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="📅" FontSize="20" HorizontalOptions="Center" />
+                                    <Label x:Name="DailyAverageLabel" 
+                                           Text="0" 
+                                           FontSize="16" 
+                                           FontAttributes="Bold" 
+                                           TextColor="#3B82F6" 
+                                           HorizontalOptions="Center" />
+                                    <Label Text="Günlük" FontSize="10" TextColor="#B8B8D6" HorizontalOptions="Center" />
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- SON KULLANIM -->
+                            <Frame Grid.Row="1" Grid.Column="2" 
+                                   BackgroundColor="#2A2A4E" 
+                                   CornerRadius="10" 
+                                   Padding="12">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="⏰" FontSize="20" HorizontalOptions="Center" />
+                                    <Label x:Name="LastUsedLabel" 
+                                           Text="Bugün" 
+                                           FontSize="12" 
+                                           FontAttributes="Bold" 
+                                           TextColor="#F59E0B" 
+                                           HorizontalOptions="Center" />
+                                    <Label Text="Son" FontSize="10" TextColor="#B8B8D6" HorizontalOptions="Center" />
+                                </VerticalStackLayout>
+                            </Frame>
+
+                        </Grid>
+
+                        <!-- PROGRESS INDICATOR -->
+                        <ProgressBar x:Name="StatsProgressBar"
+                                     Progress="0.75"
+                                     ProgressColor="#00D4AA"
+                                     BackgroundColor="#2A2A4E"
+                                     HeightRequest="6" />
+
+                        <!-- LEVEL INDICATOR -->
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="🏆"
+                                   FontSize="14"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="1"
+                                   x:Name="UserLevelLabel"
+                                   Text="Level 3: İleri Kullanıcı"
+                                   FontSize="12"
+                                   TextColor="#F59E0B"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center"
+                                   Margin="8,0,0,0" />
+                            <Label Grid.Column="2"
+                                   x:Name="NextLevelLabel"
+                                   Text="247/500 XP"
+                                   FontSize="10"
+                                   TextColor="#B8B8D6"
+                                   VerticalOptions="Center" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- SİSTEM DURUM KARTI -->
+                <Frame BackgroundColor="#1A1A2E" 
+                       CornerRadius="12" 
+                       HasShadow="True"
+                       Padding="15">
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+
+                        <!-- PROXY DURUMU -->
+                        <VerticalStackLayout Grid.Column="0" Spacing="5">
+                            <Ellipse Width="10" Height="10" Fill="#22C55E" HorizontalOptions="Center" />
+                            <Label x:Name="ProxyStatusLabel" 
+                                   Text="60 Proxy" 
+                                   FontSize="11" 
+                                   FontAttributes="Bold" 
+                                   TextColor="#22C55E" 
+                                   HorizontalOptions="Center" />
+                            <Label Text="Aktif" FontSize="9" TextColor="#B8B8D6" HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+
+                        <!-- SERVİS DURUMU -->
+                        <VerticalStackLayout Grid.Column="1" Spacing="5">
+                            <Ellipse Width="10" Height="10" Fill="#00D4AA" HorizontalOptions="Center" />
+                            <Label Text="Servis" 
+                                   FontSize="11" 
+                                   FontAttributes="Bold" 
+                                   TextColor="#00D4AA" 
+                                   HorizontalOptions="Center" />
+                            <Label Text="Çevrimiçi" FontSize="9" TextColor="#B8B8D6" HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+
+                        <!-- GÜNCELLEME DURUMU -->
+                        <VerticalStackLayout Grid.Column="2" Spacing="5">
+                            <Ellipse Width="10" Height="10" Fill="#A855F7" HorizontalOptions="Center" />
+                            <Label Text="Güncel" 
+                                   FontSize="11" 
+                                   FontAttributes="Bold" 
+                                   TextColor="#A855F7" 
+                                   HorizontalOptions="Center" />
+                            <Label Text="v1.0.5" FontSize="9" TextColor="#B8B8D6" HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+
+                    </Grid>
+                </Frame>
+
+                <!-- HIZLI ERİŞİM BUTONLARI -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+
+                    <Button Grid.Column="0"
+                            x:Name="QuickStartButton"
+                            Text="⚡ Hızlı Başlat"
+                            FontSize="14"
+                            BackgroundColor="#22C55E"
+                            TextColor="White"
+                            CornerRadius="10"
+                            HeightRequest="45"
+                            Clicked="OnQuickStartClicked" />
+
+                    <Button Grid.Column="1"
+                            x:Name="HistoryButton"
+                            Text="📜 Geçmiş"
+                            FontSize="14"
+                            BackgroundColor="#6B7280"
+                            TextColor="White"
+                            CornerRadius="10"
+                            HeightRequest="45"
+                            Clicked="OnHistoryClicked" />
+
+                </Grid>
+
+                <!-- HAKKINDA BUTONU -->
+                <Button x:Name="AboutButton"
+                        Text="ℹ️ Hakkında ve İletişim"
+                        FontSize="14"
+                        BackgroundColor="Transparent"
+                        TextColor="#B8B8D6"
+                        BorderColor="#4A4A6A"
+                        BorderWidth="1"
+                        CornerRadius="10"
+                        HeightRequest="45"
+                        Clicked="OnAboutClicked" />
+
+                <!-- VERSİYON VE FOOTER BİLGİSİ -->
+                <VerticalStackLayout Spacing="5" Margin="0,20,0,0">
+                    <Label x:Name="VersionLabel"
+                           Text="v1.0.5 - Build 20241215"
+                           FontSize="11"
+                           TextColor="#6B7280"
+                           HorizontalOptions="Center" />
+
+                    <Label Text="Made with 💪 by WebDevAjans"
+                           FontSize="12"
+                           TextColor="#6B7280"
+                           HorizontalOptions="Center" />
+
+                    <Label x:Name="LastUpdateLabel"
+                           Text="Son güncelleme: 2 gün önce"
+                           FontSize="10"
+                           TextColor="#4A4A6A"
+                           HorizontalOptions="Center" />
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

@@ -1,0 +1,874 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="BacklinkBotMobile.SettingsPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#0F0F23">
+
+    <Grid>
+        <!-- GRADIENT BACKGROUND -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#0F0F23" Offset="0.0" />
+                <GradientStop Color="#1E1E3F" Offset="0.5" />
+                <GradientStop Color="#0F0F23" Offset="1.0" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <ScrollView>
+            <VerticalStackLayout Spacing="20" Padding="20">
+
+                <!-- HEADER -->
+                <Grid ColumnDefinitions="Auto,*,Auto" Margin="0,10,0,20">
+                    <!-- GERİ BUTONU -->
+                    <Button Grid.Column="0"
+                            x:Name="BackButton"
+                            Text="◀"
+                            FontSize="24"
+                            BackgroundColor="#1A1A2E"
+                            TextColor="#3B82F6"
+                            WidthRequest="50"
+                            HeightRequest="50"
+                            CornerRadius="25"
+                            Clicked="OnBackClicked" />
+
+                    <!-- BAŞLIK -->
+                    <Label Grid.Column="1"
+                           Text="⚙️ Ayarlar"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="#3B82F6"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+
+                    <!-- KAYDET BUTONU -->
+                    <Button Grid.Column="2"
+                            x:Name="SaveButton"
+                            Text="💾"
+                            FontSize="20"
+                            BackgroundColor="#22C55E"
+                            TextColor="White"
+                            WidthRequest="50"
+                            HeightRequest="50"
+                            CornerRadius="25"
+                            Clicked="OnSaveClicked" />
+                </Grid>
+                <!-- GELİŞMİŞ PROXY AYARLARI KARTI (SettingsPage.xaml'e ekle) -->
+                <Frame BackgroundColor="#1A1A2E" 
+       CornerRadius="15" 
+       HasShadow="True"
+       Padding="20"
+       Margin="10">
+                    <VerticalStackLayout Spacing="20">
+
+                        <!-- BAŞLIK -->
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Label Grid.Column="0"
+                   Text="🌐"
+                   FontSize="24"
+                   TextColor="#8B5CF6"
+                   VerticalOptions="Center" />
+
+                            <Label Grid.Column="1"
+                   Text="Proxy Ayarları"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   TextColor="#8B5CF6"
+                   VerticalOptions="Center"
+                   Margin="10,0,0,0" />
+
+                            <Switch Grid.Column="2"
+                    x:Name="ProxyEnabledSwitch"
+                    IsToggled="False"
+                    ThumbColor="#8B5CF6"
+                    OnColor="#8B5CF6"
+                    Toggled="OnProxyEnabledChanged"
+                    VerticalOptions="Center" />
+                        </Grid>
+
+                        <!-- PROXY DURUM GÖSTERGESİ -->
+                        <Frame x:Name="ProxyStatusFrame" 
+               BackgroundColor="#2A2A4E" 
+               CornerRadius="10" 
+               Padding="15"
+               IsVisible="False">
+                            <Grid ColumnDefinitions="Auto,*">
+                                <Ellipse Grid.Column="0"
+                         x:Name="ProxyStatusIndicator"
+                         Width="12"
+                         Height="12"
+                         Fill="Red"
+                         VerticalOptions="Center" />
+
+                                <Label Grid.Column="1"
+                       x:Name="ProxyStatusLabel"
+                       Text="🔴 Proxy Bağlı Değil"
+                       TextColor="#B8B8D6"
+                       FontSize="12"
+                       VerticalOptions="Center"
+                       Margin="10,0,0,0" />
+                            </Grid>
+                        </Frame>
+
+                        <!-- PROXY SEÇİM MODU -->
+                        <VerticalStackLayout Spacing="12" x:Name="ProxySettingsSection" IsVisible="False">
+
+                            <Label Text="🎯 Proxy Seçim Stratejisi" 
+                   TextColor="#B8B8D6" 
+                   FontSize="14"
+                   FontAttributes="Bold" />
+
+                            <Frame BackgroundColor="#2A2A4E" CornerRadius="10" Padding="2">
+                                <Picker x:Name="ProxyModePicker"
+                        BackgroundColor="Transparent"
+                        TextColor="White"
+                        FontSize="14">
+                                    <Picker.Items>
+                                        <x:String>🚀 Otomatik En İyi (Düşük Load)</x:String>
+                                        <x:String>🎲 Rastgele Seçim</x:String>
+                                        <x:String>🔄 Sıralı Rotasyon</x:String>
+                                        <x:String>🌍 Manuel Seçim</x:String>
+                                        <x:String>🇺🇸 Sadece ABD Sunucuları</x:String>
+                                        <x:String>🇨🇦 Sadece Kanada Sunucuları</x:String>
+                                        <x:String>🇦🇹 Sadece Avusturya Sunucuları</x:String>
+                                        <x:String>🇧🇪 Sadece Belçika Sunucuları</x:String>
+                                        <x:String>🇧🇷 Sadece Brezilya Sunucuları</x:String>
+                                        <x:String>🇩🇪 Sadece Almanya Sunucuları</x:String>
+                                        <x:String>🇫🇷 Sadece Fransa Sunucuları</x:String>
+                                    </Picker.Items>
+                                </Picker>
+                            </Frame>
+
+                            <!-- MANUEL PROXY SEÇİMİ -->
+                            <VerticalStackLayout Spacing="10" x:Name="ManualProxySection" IsVisible="False">
+                                <Label Text="🌍 Manuel Proxy Seçimi" 
+                       TextColor="#B8B8D6" 
+                       FontSize="14"
+                       FontAttributes="Bold" />
+
+                                <Frame BackgroundColor="#2A2A4E" CornerRadius="10" Padding="2">
+                                    <Picker x:Name="SpecificProxyPicker"
+                            BackgroundColor="Transparent"
+                            TextColor="White"
+                            FontSize="12">
+                                        <Picker.Items>
+                                            <!-- EN İYİ PROXY'LER (DÜŞÜK LOAD) -->
+                                            <x:String>🥇 Arizona11 (23.158.40.122) - Load: 289 ⚡</x:String>
+                                            <x:String>🥈 Canada42 (38.96.254.114) - Load: 295 ⚡</x:String>
+                                            <x:String>🥉 Arizona6 (23.158.200.154) - Load: 321 ⚡</x:String>
+
+                                            <!-- ABD PROXY'LERİ -->
+                                            <x:String>🇺🇸 Arizona8 (23.158.200.100) - Load: 322</x:String>
+                                            <x:String>🇺🇸 Arizona9 (23.158.40.89) - Load: 328</x:String>
+                                            <x:String>🇺🇸 Arizona13 (23.158.40.220) - Load: 333</x:String>
+                                            <x:String>🇺🇸 Arizona12 (23.158.40.113) - Load: 334</x:String>
+                                            <x:String>🇺🇸 Arizona7 (23.158.40.134) - Load: 335</x:String>
+                                            <x:String>🇺🇸 Arizona10 (23.158.200.96) - Load: 347</x:String>
+                                            <x:String>🇺🇸 Arizona16 (23.158.200.135) - Load: 373</x:String>
+                                            <x:String>🇺🇸 Arizona15 (67.220.70.192) - Load: 387</x:String>
+                                            <x:String>🇺🇸 Chicago9 (38.64.138.187) - Load: 286</x:String>
+                                            <x:String>🇺🇸 Chicago12 (38.128.66.32) - Load: 268</x:String>
+
+                                            <!-- KANADA PROXY'LERİ -->
+                                            <x:String>🇨🇦 Canada43 (134.195.197.12) - Load: 329</x:String>
+                                            <x:String>🇨🇦 Canada36 (158.51.121.23) - Load: 399</x:String>
+                                            <x:String>🇨🇦 Canada35 (158.51.121.46) - Load: 417</x:String>
+                                            <x:String>🇨🇦 Canada28 (67.220.94.44) - Load: 430</x:String>
+                                            <x:String>🇨🇦 Canada27 (198.57.27.183) - Load: 448</x:String>
+                                            <x:String>🇨🇦 Canada29 (134.195.196.154) - Load: 452</x:String>
+                                            <x:String>🇨🇦 Canada25 (23.162.200.232) - Load: 456</x:String>
+                                            <x:String>🇨🇦 Canada21 (134.195.196.14) - Load: 465</x:String>
+
+                                            <!-- AVUSTURYA PROXY'LERİ -->
+                                            <x:String>🇦🇹 Austria11 (130.195.222.90) - Load: 405</x:String>
+                                            <x:String>🇦🇹 Austria5 (5.253.207.66) - Load: 428</x:String>
+                                            <x:String>🇦🇹 Austria4 (5.253.207.82) - Load: 442</x:String>
+                                            <x:String>🇦🇹 Austria12 (130.195.222.106) - Load: 452</x:String>
+                                            <x:String>🇦🇹 Austria3 (5.253.207.90) - Load: 483</x:String>
+
+                                            <!-- BELÇIKA PROXY'LERİ -->
+                                            <x:String>🇧🇪 Belgium7 (146.70.190.6) - Load: 929</x:String>
+                                            <x:String>🇧🇪 Belgium8 (146.70.190.2) - Load: 937</x:String>
+                                            <x:String>🇧🇪 Belgium6 (146.70.190.10) - Load: 947</x:String>
+
+                                            <!-- BREZILYA PROXY'LERİ -->
+                                            <x:String>🇧🇷 Brazil11 (103.88.232.55) - Load: 810</x:String>
+                                            <x:String>🇧🇷 Brazil7 (103.14.27.207) - Load: 1154</x:String>
+
+                                            <!-- FRANSA PROXY'LERİ (Seçilmiş En İyiler) -->
+                                            <x:String>🇫🇷 France197 (141.94.240.100) - Load: 422</x:String>
+                                            <x:String>🇫🇷 France185 (91.134.35.72) - Load: 424</x:String>
+                                            <x:String>🇫🇷 France25 (23.134.91.50) - Load: 447</x:String>
+                                            <x:String>🇫🇷 France195 (57.128.126.34) - Load: 448</x:String>
+                                        </Picker.Items>
+                                    </Picker>
+                                </Frame>
+                            </VerticalStackLayout>
+
+                            <!-- PROXY İSTATİSTİKLERİ -->
+                            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                                <Frame Grid.Column="0" BackgroundColor="#2A2A4E" CornerRadius="8" Padding="8">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label x:Name="ProxyCountLabel" 
+                               Text="0" 
+                               FontSize="16" 
+                               FontAttributes="Bold" 
+                               TextColor="#8B5CF6" 
+                               HorizontalOptions="Center" />
+                                        <Label Text="Toplam" 
+                               FontSize="10" 
+                               TextColor="#B8B8D6" 
+                               HorizontalOptions="Center" />
+                                    </VerticalStackLayout>
+                                </Frame>
+
+                                <Frame Grid.Column="1" BackgroundColor="#2A2A4E" CornerRadius="8" Padding="8">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label x:Name="ProxyLoadLabel" 
+                               Text="0%" 
+                               FontSize="16" 
+                               FontAttributes="Bold" 
+                               TextColor="#F59E0B" 
+                               HorizontalOptions="Center" />
+                                        <Label Text="Ort. Load" 
+                               FontSize="10" 
+                               TextColor="#B8B8D6" 
+                               HorizontalOptions="Center" />
+                                    </VerticalStackLayout>
+                                </Frame>
+
+                                <Frame Grid.Column="2" BackgroundColor="#2A2A4E" CornerRadius="8" Padding="8">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label x:Name="ProxyCountryLabel" 
+                               Text="0" 
+                               FontSize="16" 
+                               FontAttributes="Bold" 
+                               TextColor="#10B981" 
+                               HorizontalOptions="Center" />
+                                        <Label Text="Ülke" 
+                               FontSize="10" 
+                               TextColor="#B8B8D6" 
+                               HorizontalOptions="Center" />
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </Grid>
+
+                            <!-- AKTİF PROXY BİLGİSİ -->
+                            <Frame x:Name="ActiveProxyFrame" 
+                   BackgroundColor="#0F1419" 
+                   CornerRadius="10" 
+                   Padding="12"
+                   IsVisible="False"
+                   BorderColor="#8B5CF6">
+                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                    <Label Grid.Column="0"
+                           Text="🟢"
+                           FontSize="16"
+                           VerticalOptions="Center" />
+
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2" Margin="10,0,0,0">
+                                        <Label x:Name="ActiveProxyNameLabel"
+                               Text="Arizona11"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="White" />
+                                        <Label x:Name="ActiveProxyDetailsLabel"
+                               Text="23.158.40.122:80 • Load: 289"
+                               FontSize="12"
+                               TextColor="#B8B8D6" />
+                                    </VerticalStackLayout>
+
+                                    <Button Grid.Column="2"
+                            x:Name="ChangeProxyButton"
+                            Text="🔄"
+                            FontSize="12"
+                            BackgroundColor="#8B5CF6"
+                            TextColor="White"
+                            CornerRadius="15"
+                            WidthRequest="30"
+                            HeightRequest="30"
+                            Padding="0"
+                            Clicked="OnChangeProxyClicked" />
+                                </Grid>
+                            </Frame>
+
+                            <!-- PROXY TEST VE AYARLAR -->
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                <Button Grid.Column="0"
+                        x:Name="TestProxyButton"
+                        Text="🧪 Test Et"
+                        FontSize="14"
+                        BackgroundColor="#10B981"
+                        TextColor="White"
+                        CornerRadius="10"
+                        Clicked="OnTestProxyClicked" />
+
+                                <Button Grid.Column="1"
+                        x:Name="ProxySettingsButton"
+                        Text="⚙️ Ayarlar"
+                        FontSize="14"
+                        BackgroundColor="#6B7280"
+                        TextColor="White"
+                        CornerRadius="10"
+                        Clicked="OnProxyAdvancedSettingsClicked" />
+                            </Grid>
+
+                        </VerticalStackLayout>
+
+                        <!-- GELİŞMİŞ AYARLAR (GİZLİ) -->
+                        <VerticalStackLayout x:Name="AdvancedProxySettings" IsVisible="False" Spacing="15">
+
+                            <Label Text="🔧 Gelişmiş Proxy Ayarları" 
+                   TextColor="#8B5CF6" 
+                   FontSize="16"
+                   FontAttributes="Bold" />
+
+                            <!-- TIMEOUT AYARI -->
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                       Text="⏱️ Bağlantı Timeout (saniye)"
+                       TextColor="#B8B8D6"
+                       FontSize="14"
+                       VerticalOptions="Center" />
+
+                                <Entry Grid.Column="1"
+                       x:Name="ProxyTimeoutEntry"
+                       Text="10"
+                       Keyboard="Numeric"
+                       WidthRequest="60"
+                       BackgroundColor="#2A2A4E"
+                       TextColor="White"
+                       FontSize="14" />
+                            </Grid>
+
+                            <!-- OTOMATİK ROTASYONb-->
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                       Text="🔄 Otomatik Proxy Rotasyonu"
+                       TextColor="#B8B8D6"
+                       FontSize="14"
+                       VerticalOptions="Center" />
+
+                                <Switch Grid.Column="1"
+                        x:Name="AutoRotationSwitch"
+                        ThumbColor="#8B5CF6"
+                        OnColor="#8B5CF6" />
+                            </Grid>
+
+                            <!-- ROTASYON SÜRESİ -->
+                            <Grid ColumnDefinitions="*,Auto" x:Name="RotationIntervalGrid" IsVisible="False">
+                                <Label Grid.Column="0"
+                       Text="⏰ Rotasyon Süresi (dakika)"
+                       TextColor="#B8B8D6"
+                       FontSize="14"
+                       VerticalOptions="Center" />
+
+                                <Entry Grid.Column="1"
+                       x:Name="RotationIntervalEntry"
+                       Text="5"
+                       Keyboard="Numeric"
+                       WidthRequest="60"
+                       BackgroundColor="#2A2A4E"
+                       TextColor="White"
+                       FontSize="14" />
+                            </Grid>
+
+                            <!-- BAŞARISIZ PROXY'Yİ ATLA -->
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                       Text="⚠️ Başarısız Proxy'leri Otomatik Atla"
+                       TextColor="#B8B8D6"
+                       FontSize="14"
+                       VerticalOptions="Center" />
+
+                                <Switch Grid.Column="1"
+                        x:Name="SkipFailedProxySwitch"
+                        IsToggled="True"
+                        ThumbColor="#8B5CF6"
+                        OnColor="#8B5CF6" />
+                            </Grid>
+
+                            <!-- PROXY POOL YENİLE -->
+                            <Button x:Name="RefreshProxyPoolButton"
+                    Text="🔄 Proxy Listesini Yenile"
+                    FontSize="14"
+                    BackgroundColor="#6366F1"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Clicked="OnRefreshProxyPoolClicked" />
+
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </Frame>
+                <!-- BOT PERFORMANCE AYARLARI -->
+                <Frame BackgroundColor="#1A1A2E" 
+                       CornerRadius="15" 
+                       HasShadow="True"
+                       Padding="20">
+                    <VerticalStackLayout Spacing="20">
+
+                        <Label Text="🚀 Bot Performans Ayarları"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="#3B82F6" />
+
+                        <!-- HIZ AYARI -->
+                        <VerticalStackLayout Spacing="10">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                                       Text="⚡ İşlem Hızı"
+                                       TextColor="#B8B8D6"
+                                       FontSize="14"
+                                       VerticalOptions="Center" />
+
+                                <Label Grid.Column="1"
+                                       x:Name="SpeedValueLabel"
+                                       Text="Orta (5)"
+                                       TextColor="#00D4AA"
+                                       FontSize="12"
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center" />
+                            </Grid>
+
+                            <Slider x:Name="SpeedSlider"
+                                    Minimum="1"
+                                    Maximum="10"
+                                    Value="5"
+                                    ThumbColor="#00D4AA"
+                                    MinimumTrackColor="#00D4AA"
+                                    MaximumTrackColor="#4A4A6A"
+                                    ValueChanged="OnSpeedChanged" />
+
+                            <Label Text="1=Çok Yavaş | 5=Orta | 10=Maximum"
+                                   FontSize="10"
+                                   TextColor="#6B7280"
+                                   HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+
+                        <!-- TIMEOUT AYARI -->
+                        <VerticalStackLayout Spacing="10">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                                       Text="⏱️ Zaman Aşımı"
+                                       TextColor="#B8B8D6"
+                                       FontSize="14"
+                                       VerticalOptions="Center" />
+
+                                <Label Grid.Column="1"
+                                       x:Name="TimeoutValueLabel"
+                                       Text="30 saniye"
+                                       TextColor="#FF6B6B"
+                                       FontSize="12"
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center" />
+                            </Grid>
+
+                            <Slider x:Name="TimeoutSlider"
+                                    Minimum="5"
+                                    Maximum="120"
+                                    Value="30"
+                                    ThumbColor="#FF6B6B"
+                                    MinimumTrackColor="#FF6B6B"
+                                    MaximumTrackColor="#4A4A6A"
+                                    ValueChanged="OnTimeoutChanged" />
+
+                            <Label Text="5=Çok Hızlı | 30=Normal | 120=Güvenli"
+                                   FontSize="10"
+                                   TextColor="#6B7280"
+                                   HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+
+                        <!-- PARALEL İŞLEM -->
+                        <VerticalStackLayout Spacing="10">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                                       Text="🔄 Paralel İşlem Sayısı"
+                                       TextColor="#B8B8D6"
+                                       FontSize="14"
+                                       VerticalOptions="Center" />
+
+                                <Label Grid.Column="1"
+                                       x:Name="ParallelValueLabel"
+                                       Text="3 thread"
+                                       TextColor="#A855F7"
+                                       FontSize="12"
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center" />
+                            </Grid>
+
+                            <Slider x:Name="ParallelSlider"
+                                    Minimum="1"
+                                    Maximum="8"
+                                    Value="3"
+                                    ThumbColor="#A855F7"
+                                    MinimumTrackColor="#A855F7"
+                                    MaximumTrackColor="#4A4A6A"
+                                    ValueChanged="OnParallelChanged" />
+
+                            <Label Text="1=Güvenli | 3=Optimal | 8=Agresif"
+                                   FontSize="10"
+                                   TextColor="#6B7280"
+                                   HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+
+                        <!-- RETRY SAYISI -->
+                        <VerticalStackLayout Spacing="10">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                                       Text="🔁 Tekrar Deneme Sayısı"
+                                       TextColor="#B8B8D6"
+                                       FontSize="14"
+                                       VerticalOptions="Center" />
+
+                                <Label Grid.Column="1"
+                                       x:Name="RetryValueLabel"
+                                       Text="2 kez"
+                                       TextColor="#F59E0B"
+                                       FontSize="12"
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center" />
+                            </Grid>
+
+                            <Slider x:Name="RetrySlider"
+                                    Minimum="0"
+                                    Maximum="5"
+                                    Value="2"
+                                    ThumbColor="#F59E0B"
+                                    MinimumTrackColor="#F59E0B"
+                                    MaximumTrackColor="#4A4A6A"
+                                    ValueChanged="OnRetryChanged" />
+
+                            <Label Text="0=Tek Seferlik | 2=Normal | 5=Kararlı"
+                                   FontSize="10"
+                                   TextColor="#6B7280"
+                                   HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- FORM DOLDURMA AYARLARI -->
+                <Frame BackgroundColor="#1A1A2E" 
+                       CornerRadius="15" 
+                       HasShadow="True"
+                       Padding="20">
+                    <VerticalStackLayout Spacing="20">
+
+                        <Label Text="📝 Form Doldurma Ayarları"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="#22C55E" />
+
+                        <!-- OTOMATİK CAPTCHA -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="🔐 Otomatik Captcha Çözme"
+                                   TextColor="#B8B8D6"
+                                   FontSize="14"
+                                   VerticalOptions="Center" />
+
+                            <Switch Grid.Column="1"
+                                    x:Name="CaptchaSwitch"
+                                    IsToggled="True"
+                                    ThumbColor="#22C55E"
+                                    OnColor="#22C55E" />
+                        </Grid>
+
+                        <!-- FORM VALİDASYONU -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="✅ Form Validasyonu"
+                                   TextColor="#B8B8D6"
+                                   FontSize="14"
+                                   VerticalOptions="Center" />
+
+                            <Switch Grid.Column="1"
+                                    x:Name="ValidationSwitch"
+                                    IsToggled="True"
+                                    ThumbColor="#3B82F6"
+                                    OnColor="#3B82F6" />
+                        </Grid>
+
+                        <!-- RANDOM DELAY -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="🎲 Rastgele Gecikme"
+                                   TextColor="#B8B8D6"
+                                   FontSize="14"
+                                   VerticalOptions="Center" />
+
+                            <Switch Grid.Column="1"
+                                    x:Name="RandomDelaySwitch"
+                                    IsToggled="True"
+                                    ThumbColor="#A855F7"
+                                    OnColor="#A855F7" />
+                        </Grid>
+
+                        <!-- SMART FORM DETECTION -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="🧠 Akıllı Form Algılama"
+                                   TextColor="#B8B8D6"
+                                   FontSize="14"
+                                   VerticalOptions="Center" />
+
+                            <Switch Grid.Column="1"
+                                    x:Name="SmartDetectionSwitch"
+                                    IsToggled="True"
+                                    ThumbColor="#F59E0B"
+                                    OnColor="#F59E0B" />
+                        </Grid>
+
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- GÜVENLIK AYARLARI -->
+                <Frame BackgroundColor="#1A1A2E" 
+                       CornerRadius="15" 
+                       HasShadow="True"
+                       Padding="20">
+                    <VerticalStackLayout Spacing="20">
+
+                        <Label Text="🛡️ Güvenlik Ayarları"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="#EF4444" />
+
+                        <!-- USER AGENT ROTASYONu -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="🔄 User-Agent Rotasyonu"
+                                   TextColor="#B8B8D6"
+                                   FontSize="14"
+                                   VerticalOptions="Center" />
+
+                            <Switch Grid.Column="1"
+                                    x:Name="UserAgentSwitch"
+                                    IsToggled="True"
+                                    ThumbColor="#EF4444"
+                                    OnColor="#EF4444" />
+                        </Grid>
+
+                        <!-- IP ROTATION -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="🌐 IP Rotation (Proxy)"
+                                   TextColor="#B8B8D6"
+                                   FontSize="14"
+                                   VerticalOptions="Center" />
+
+                            <Switch Grid.Column="1"
+                                    x:Name="ProxySwitch"
+                                    IsToggled="False"
+                                    ThumbColor="#8B5CF6"
+                                    OnColor="#8B5CF6" />
+                        </Grid>
+
+                        <!-- SSL VERIFICATION -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="🔒 SSL Sertifika Kontrolü"
+                                   TextColor="#B8B8D6"
+                                   FontSize="14"
+                                   VerticalOptions="Center" />
+
+                            <Switch Grid.Column="1"
+                                    x:Name="SslSwitch"
+                                    IsToggled="True"
+                                    ThumbColor="#10B981"
+                                    OnColor="#10B981" />
+                        </Grid>
+
+                        <!-- STEALTH MODE -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="👤 Stealth Mode (Gizli)"
+                                   TextColor="#B8B8D6"
+                                   FontSize="14"
+                                   VerticalOptions="Center" />
+
+                            <Switch Grid.Column="1"
+                                    x:Name="StealthSwitch"
+                                    IsToggled="False"
+                                    ThumbColor="#6366F1"
+                                    OnColor="#6366F1" />
+                        </Grid>
+
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- RAPOR VE LOGLama -->
+                <Frame BackgroundColor="#1A1A2E" 
+                       CornerRadius="15" 
+                       HasShadow="True"
+                       Padding="20">
+                    <VerticalStackLayout Spacing="20">
+
+                        <Label Text="📊 Rapor ve Loglama"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="#F59E0B" />
+
+                        <!-- DETAYLI LOG -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="📝 Detaylı Log Kayıtları"
+                                   TextColor="#B8B8D6"
+                                   FontSize="14"
+                                   VerticalOptions="Center" />
+
+                            <Switch Grid.Column="1"
+                                    x:Name="DetailedLogSwitch"
+                                    IsToggled="True"
+                                    ThumbColor="#F59E0B"
+                                    OnColor="#F59E0B" />
+                        </Grid>
+
+                        <!-- OTOMATİK RAPOR -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="📄 Otomatik Rapor Oluşturma"
+                                   TextColor="#B8B8D6"
+                                   FontSize="14"
+                                   VerticalOptions="Center" />
+
+                            <Switch Grid.Column="1"
+                                    x:Name="AutoReportSwitch"
+                                    IsToggled="True"
+                                    ThumbColor="#06B6D4"
+                                    OnColor="#06B6D4" />
+                        </Grid>
+
+                        <!-- BAŞARI İSTATİSTİKLERİ -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="📈 Başarı İstatistikleri"
+                                   TextColor="#B8B8D6"
+                                   FontSize="14"
+                                   VerticalOptions="Center" />
+
+                            <Switch Grid.Column="1"
+                                    x:Name="StatsSwitch"
+                                    IsToggled="True"
+                                    ThumbColor="#EC4899"
+                                    OnColor="#EC4899" />
+                        </Grid>
+
+                        <!-- HATA KAYITLARI -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="⚠️ Hata Kayıtlarını Sakla"
+                                   TextColor="#B8B8D6"
+                                   FontSize="14"
+                                   VerticalOptions="Center" />
+
+                            <Switch Grid.Column="1"
+                                    x:Name="ErrorLogSwitch"
+                                    IsToggled="True"
+                                    ThumbColor="#EF4444"
+                                    OnColor="#EF4444" />
+                        </Grid>
+
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- SİSTEM AYARLARI -->
+                <Frame BackgroundColor="#1A1A2E" 
+                       CornerRadius="15" 
+                       HasShadow="True"
+                       Padding="20">
+                    <VerticalStackLayout Spacing="15">
+
+                        <Label Text="💻 Sistem Ayarları"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="#8B5CF6" />
+
+                        <!-- AKSIYON BUTONLARI -->
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10" RowSpacing="10">
+
+                            <Button Grid.Column="0"
+                                    x:Name="ResetButton"
+                                    Text="🔄 Ayarları Sıfırla"
+                                    FontSize="12"
+                                    BackgroundColor="#EF4444"
+                                    TextColor="White"
+                                    CornerRadius="10"
+                                    Clicked="OnResetClicked" />
+
+                            <Button Grid.Column="1"
+                                    x:Name="ExportButton"
+                                    Text="📤 Ayarları Dışa Aktar"
+                                    FontSize="12"
+                                    BackgroundColor="#3B82F6"
+                                    TextColor="White"
+                                    CornerRadius="10"
+                                    Clicked="OnExportClicked" />
+
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+
+                            <Button Grid.Column="0"
+                                    x:Name="ImportButton"
+                                    Text="📥 Ayarları İçe Aktar"
+                                    FontSize="12"
+                                    BackgroundColor="#10B981"
+                                    TextColor="White"
+                                    CornerRadius="10"
+                                    Clicked="OnImportClicked" />
+
+                            <Button Grid.Column="1"
+                                    x:Name="TestButton"
+                                    Text="🧪 Ayarları Test Et"
+                                    FontSize="12"
+                                    BackgroundColor="#F59E0B"
+                                    TextColor="White"
+                                    CornerRadius="10"
+                                    Clicked="OnTestClicked" />
+
+                        </Grid>
+
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- UYGULAMA BİLGİLERİ -->
+                <Frame BackgroundColor="#1A1A2E" 
+                       CornerRadius="15" 
+                       HasShadow="True"
+                       Padding="20"
+                       Margin="0,0,0,20">
+                    <VerticalStackLayout Spacing="10">
+
+                        <Label Text="ℹ️ Uygulama Bilgileri"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#6B7280" />
+
+                        <Label Text="BacklinkBot Mobile Pro v1.0"
+                               TextColor="#B8B8D6"
+                               FontSize="12" />
+
+                        <Label Text="Geliştirici: WebDevAjans"
+                               TextColor="#B8B8D6"
+                               FontSize="12" />
+
+                        <Label Text="Telegram: @onm_N | Email: info@webdevajans.com"
+                               TextColor="#B8B8D6"
+                               FontSize="10" />
+
+                        <Label Text="⚠️ Bu yazılım tamamen ücretsizdir - Satışı yasaktır!"
+                               TextColor="#EF4444"
+                               FontAttributes="Bold"
+                               FontSize="10"
+                               HorizontalOptions="Center" />
+
+                    </VerticalStackLayout>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>
